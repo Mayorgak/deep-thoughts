@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useMutation } from "@apollo/react-hooks";
 import { LOGIN_USER } from "../utils/mutations";
 
+import Auth from "../utils/auth";
+
+
 const Login = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
 
@@ -25,15 +28,15 @@ const [login, { error }] = useMutation(LOGIN_USER);
 const handleFormSubmit = async event => {
   event.preventDefault();
 
-  try {
-    const { data } = await login({
-      variables: { ...formState }
-    });
+ try {
+   const { data } = await login({
+     variables: { ...formState },
+   });
 
-    console.log(data);
-  } catch (e) {
-    console.error(e);
-  }
+   Auth.login(data.login.token);
+ } catch (e) {
+   console.error(e);
+ }
 };
 
 
